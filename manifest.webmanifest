@@ -1,0 +1,17 @@
+{
+  "name": "PULSE 抢票作战台",
+  "short_name": "PULSE",
+  "description": "官方入口、开售倒计时、准备清单和回流票提醒。",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f3efe5",
+  "theme_color": "#f3efe5",
+  "icons": [
+    {
+      "src": "./pulse-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

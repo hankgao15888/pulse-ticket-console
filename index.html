@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f3efe5" />
+    <meta
+      name="description"
+      content="PULSE 抢票作战台：统一管理官方入口、开售倒计时、准备清单和回流票时间窗。"
+    />
+    <title>PULSE 抢票作战台</title>
+    <link rel="icon" href="./pulse-mark.svg" type="image/svg+xml" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./styles.css?v=2" />
+  </head>
+  <body>
+    <div class="page-noise" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="PULSE 抢票作战台首页">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 42 42" role="img">
+            <path d="M5 22h8l3-12 7 23 4-11h10" />
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <strong>PULSE</strong>
+          <small>抢票作战台</small>
+        </span>
+      </a>
+
+      <div class="header-status" aria-live="polite">
+        <span class="status-dot"></span>
+        <span>数据仅存本机</span>
+        <span class="divider"></span>
+        <span id="header-clock">--:--:--</span>
+      </div>
+
+      <nav class="header-actions" aria-label="快捷操作">
+        <button class="button button-quiet" id="notification-button" type="button">
+          <span class="button-icon" aria-hidden="true">◉</span>
+          开启提醒
+        </button>
+        <button class="button button-dark" data-open-event-modal type="button">
+          <span aria-hidden="true">＋</span>
+          添加场次
+        </button>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero section-shell" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span>Ticket operations</span>
+            <span class="eyebrow-line"></span>
+            <span>No. 001</span>
+          </p>
+          <h1 id="hero-title">
+            把每一秒<br />
+            用在<span>开售前。</span>
+          </h1>
+          <p class="hero-intro">
+            火车票、演唱会、展览和赛事，放进同一张作战面板。提前整理官方入口、实名资料、支付方式和回流时间窗，少一次手忙脚乱，多一秒真实机会。
+          </p>
+          <div class="hero-actions">
+            <button class="button button-accent button-large" data-open-event-modal type="button">
+              建立第一场任务
+              <span aria-hidden="true">↗</span>
+            </button>
+            <a class="text-link" href="#checklist">
+              查看开售前检查
+              <span aria-hidden="true">↓</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-side">
+          <div class="live-card">
+            <div class="live-card-top">
+              <span>Beijing local time</span>
+              <span class="live-indicator"><i></i> LIVE</span>
+            </div>
+            <time class="hero-clock" id="hero-clock">00:00:00</time>
+            <div class="live-card-bottom">
+              <span id="hero-date">----年--月--日</span>
+              <a href="https://time.is/Beijing" target="_blank" rel="noreferrer">
+                对时 ↗
+              </a>
+            </div>
+            <div class="clock-ruler" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <div class="signal-card" aria-label="使用原则">
+            <div class="signal-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32">
+                <path d="M4 26V14M12 26V6M20 26V17M28 26V10" />
+              </svg>
+            </div>
+            <div>
+              <span class="signal-label">FAST / FAIR / OFFICIAL</span>
+              <p>不做外挂，不绕验证。只在官方渠道里，把自己准备到最好。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          <span>OFFICIAL CHANNELS ONLY</span><b>✦</b>
+          <span>12306</span><b>✦</b>
+          <span>大麦</span><b>✦</b>
+          <span>猫眼</span><b>✦</b>
+          <span>秀动</span><b>✦</b>
+          <span>BILIBILI 会员购</span><b>✦</b>
+          <span>PREPARE EARLY</span><b>✦</b>
+          <span>STAY CALM</span><b>✦</b>
+          <span>OFFICIAL CHANNELS ONLY</span><b>✦</b>
+          <span>12306</span><b>✦</b>
+          <span>大麦</span><b>✦</b>
+          <span>猫眼</span><b>✦</b>
+          <span>秀动</span><b>✦</b>
+          <span>BILIBILI 会员购</span><b>✦</b>
+          <span>PREPARE EARLY</span><b>✦</b>
+          <span>STAY CALM</span><b>✦</b>
+        </div>
+      </div>
+
+      <section class="next-drop section-shell" aria-labelledby="next-drop-title">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">Next drop / 01</p>
+            <h2 id="next-drop-title">下一场开售</h2>
+          </div>
+          <div class="edition-stamp">
+            <span>PERSONAL EDITION</span>
+            <strong id="next-countdown-compact">--:--:--</strong>
+          </div>
+        </div>
+
+        <article class="featured-event" id="featured-event" aria-live="polite">
+          <div class="featured-main">
+            <div class="featured-meta">
+              <span class="category-chip" id="featured-category">火车票</span>
+              <span id="featured-status">准备中</span>
+            </div>
+            <h3 id="featured-name">还差一个目标</h3>
+            <p class="featured-place" id="featured-place">添加你的第一个开售场次，倒计时会出现在这里。</p>
+            <div class="countdown" id="featured-countdown" aria-label="距离下一场开售">
+              <div class="countdown-unit">
+                <strong data-countdown="days">00</strong>
+                <span>DAYS</span>
+              </div>
+              <i>:</i>
+              <div class="countdown-unit">
+                <strong data-countdown="hours">00</strong>
+                <span>HRS</span>
+              </div>
+              <i>:</i>
+              <div class="countdown-unit">
+                <strong data-countdown="minutes">00</strong>
+                <span>MIN</span>
+              </div>
+              <i>:</i>
+              <div class="countdown-unit">
+                <strong data-countdown="seconds">00</strong>
+                <span>SEC</span>
+              </div>
+            </div>
+            <div class="featured-actions">
+              <button class="button button-dark button-large" id="featured-launch" type="button">
+                打开官方入口
+                <span aria-hidden="true">↗</span>
+              </button>
+              <button class="icon-button" id="featured-edit" type="button" aria-label="编辑当前场次">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 20h4l10-10-4-4L4 16v4Z" />
+                  <path d="m12.5 7.5 4 4" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <aside class="featured-side">
+            <div class="ticket-stub">
+              <div class="stub-head">
+                <span>SALE WINDOW</span>
+                <span>CN / UTC+8</span>
+              </div>
+              <div class="stub-time">
+                <span id="featured-sale-date">--月--日</span>
+                <strong id="featured-sale-time">--:--</strong>
+              </div>
+              <div class="perforation" aria-hidden="true"></div>
+              <div class="stub-details">
+                <div>
+                  <span>场次类型</span>
+                  <strong id="featured-type-long">火车票</strong>
+                </div>
+                <div>
+                  <span>提醒策略</span>
+                  <strong>T-60 / T-10 / T-1</strong>
+                </div>
+                <div>
+                  <span>官方入口</span>
+                  <strong id="featured-domain">待添加</strong>
+                </div>
+              </div>
+              <div class="barcode" aria-hidden="true"></div>
+            </div>
+            <div class="drop-rule">
+              <span>开售后重点关注</span>
+              <div>
+                <b>+5m</b><b>+10m</b><b>+15m</b><b>+30m</b>
+              </div>
+              <small>未支付订单通常会在这些时间附近回流，具体以官方页面为准。</small>
+            </div>
+          </aside>
+        </article>
+      </section>
+
+      <section class="metrics section-shell" aria-label="任务概览">
+        <div class="metric">
+          <span class="metric-number" id="metric-upcoming">0</span>
+          <div>
+            <strong>待开售任务</strong>
+            <small>未来 90 天内</small>
+          </div>
+        </div>
+        <div class="metric">
+          <span class="metric-number" id="metric-readiness">0%</span>
+          <div>
+            <strong>下一场准备度</strong>
+            <small>六项战前检查</small>
+          </div>
+        </div>
+        <div class="metric">
+          <span class="metric-number" id="metric-backflow">0</span>
+          <div>
+            <strong>回流监视线程</strong>
+            <small>已开售任务</small>
+          </div>
+        </div>
+        <div class="metric metric-note">
+          <span class="metric-mark">!</span>
+          <p>抢票成功率取决于库存与官方排队。这里不承诺结果，只帮你把可控项拉满。</p>
+        </div>
+      </section>
+
+      <section class="ops-grid section-shell">
+        <div class="ops-main">
+          <section class="panel checklist-panel" id="checklist" aria-labelledby="checklist-title">
+            <div class="panel-heading">
+              <div>
+                <p class="kicker">Pre-flight / 02</p>
+                <h2 id="checklist-title">开售前检查</h2>
+              </div>
+              <span class="progress-label" id="checklist-label">0 / 6</span>
+            </div>
+            <p class="panel-intro">
+              针对下一场任务。每勾掉一项，你就少一个在开售后才发现的坑。
+            </p>
+            <div class="checklist" id="checklist-items"></div>
+            <div class="checklist-foot">
+              <div class="progress-track"><span id="checklist-progress"></span></div>
+              <button class="text-button" id="reset-checklist" type="button">重置检查</button>
+            </div>
+          </section>
+
+          <section class="panel backflow-panel" aria-labelledby="backflow-title">
+            <div class="panel-heading">
+              <div>
+                <p class="kicker">Backflow radar / 03</p>
+                <h2 id="backflow-title">回流票时间窗</h2>
+              </div>
+              <span class="radar-pulse" aria-hidden="true"></span>
+            </div>
+            <div class="radar-layout">
+              <div class="radar-copy">
+                <strong>不要只盯开售那一秒。</strong>
+                <p>
+                  未支付订单释放、平台分批放票、官方候补兑现，都可能带来第二次机会。把页面留在官方入口，按时间窗有节奏地查看。
+                </p>
+                <div class="radar-status" id="radar-status">
+                  添加并开售后，这里会显示当前可关注的回流窗口。
+                </div>
+              </div>
+              <div class="radar-timeline" id="radar-timeline">
+                <div class="radar-step" data-window="5">
+                  <span>+05</span><strong>首批回流</strong><small>未支付订单开始释放</small>
+                </div>
+                <div class="radar-step" data-window="10">
+                  <span>+10</span><strong>第二次刷新</strong><small>关注系统分批放票</small>
+                </div>
+                <div class="radar-step" data-window="15">
+                  <span>+15</span><strong>候补/退票</strong><small>官方候补可能兑现</small>
+                </div>
+                <div class="radar-step" data-window="30">
+                  <span>+30</span><strong>末段窗口</strong><small>最后检查现场/回流票</small>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="event-section" id="events" aria-labelledby="events-title">
+            <div class="panel-heading event-heading">
+              <div>
+                <p class="kicker">Mission board / 04</p>
+                <h2 id="events-title">全部场次</h2>
+              </div>
+              <button class="button button-outline" data-open-event-modal type="button">
+                <span aria-hidden="true">＋</span> 添加场次
+              </button>
+            </div>
+            <div class="filter-row" id="filter-row" role="group" aria-label="按类型筛选">
+              <button class="filter active" data-filter="all" type="button">全部 <span>0</span></button>
+              <button class="filter" data-filter="train" type="button">火车票 <span>0</span></button>
+              <button class="filter" data-filter="concert" type="button">演唱会 <span>0</span></button>
+              <button class="filter" data-filter="exhibition" type="button">展览 <span>0</span></button>
+              <button class="filter" data-filter="sports" type="button">赛事 <span>0</span></button>
+              <button class="filter" data-filter="other" type="button">其他 <span>0</span></button>
+            </div>
+            <div class="event-grid" id="event-grid"></div>
+          </section>
+        </div>
+
+        <aside class="ops-side">
+          <section class="panel launch-panel" aria-labelledby="launch-title">
+            <div class="panel-heading">
+              <div>
+                <p class="kicker">Quick launch / A</p>
+                <h2 id="launch-title">官方入口</h2>
+              </div>
+              <span class="tiny-note">仅跳转</span>
+            </div>
+            <div class="launch-list">
+              <a href="https://www.12306.cn/index/" target="_blank" rel="noreferrer" class="launch-item">
+                <span class="launch-index">01</span>
+                <span class="launch-copy"><strong>铁路 12306</strong><small>火车票 / 候补</small></span>
+                <span class="launch-arrow">↗</span>
+              </a>
+              <a href="https://www.damai.cn/" target="_blank" rel="noreferrer" class="launch-item">
+                <span class="launch-index">02</span>
+                <span class="launch-copy"><strong>大麦</strong><small>演唱会 / 展览 / 赛事</small></span>
+                <span class="launch-arrow">↗</span>
+              </a>
+              <a href="https://www.maoyan.com/" target="_blank" rel="noreferrer" class="launch-item">
+                <span class="launch-index">03</span>
+                <span class="launch-copy"><strong>猫眼</strong><small>演出 / 电影 / 赛事</small></span>
+                <span class="launch-arrow">↗</span>
+              </a>
+              <a href="https://www.showstart.com/" target="_blank" rel="noreferrer" class="launch-item">
+                <span class="launch-index">04</span>
+                <span class="launch-copy"><strong>秀动</strong><small>Livehouse / 音乐节</small></span>
+                <span class="launch-arrow">↗</span>
+              </a>
+              <a href="https://show.bilibili.com/" target="_blank" rel="noreferrer" class="launch-item">
+                <span class="launch-index">05</span>
+                <span class="launch-copy"><strong>BILIBILI 会员购</strong><small>演出 / 展览</small></span>
+                <span class="launch-arrow">↗</span>
+              </a>
+            </div>
+            <p class="launch-foot">入口可能随平台调整，购票前请以官方 App 内公告为准。</p>
+          </section>
+
+          <section class="panel tactics-panel" aria-labelledby="tactics-title">
+            <div class="panel-heading">
+              <div>
+                <p class="kicker">Playbook / B</p>
+                <h2 id="tactics-title">四步提速法</h2>
+              </div>
+            </div>
+            <ol class="tactics-list">
+              <li>
+                <span>01</span>
+                <div><strong>先过资格</strong><p>登录、实名、观演人、乘车人、候补资格全部提前确认。</p></div>
+              </li>
+              <li>
+                <span>02</span>
+                <div><strong>再锁支付</strong><p>余额、免密、银行卡限额和收货地址提前设置。</p></div>
+              </li>
+              <li>
+                <span>03</span>
+                <div><strong>别乱刷新</strong><p>已经进入官方排队页时，按页面提示等待，避免丢掉排队位置。</p></div>
+              </li>
+              <li>
+                <span>04</span>
+                <div><strong>盯住回流</strong><p>开售后 5、10、15、30 分钟继续看官方页面或候补。</p></div>
+              </li>
+            </ol>
+          </section>
+
+          <section class="panel data-panel" aria-labelledby="data-title">
+            <div class="panel-heading">
+              <div>
+                <p class="kicker">Local data / C</p>
+                <h2 id="data-title">你的数据</h2>
+              </div>
+              <span class="tiny-note">LocalStorage</span>
+            </div>
+            <p>账号密码不会被收集。场次、链接和检查项只保存在当前浏览器。</p>
+            <div class="data-actions">
+              <button class="button button-outline" id="export-data" type="button">导出备份</button>
+              <label class="button button-quiet file-button">
+                导入
+                <input id="import-data" type="file" accept="application/json" />
+              </label>
+            </div>
+            <button class="danger-link" id="clear-all" type="button">清空所有本地数据</button>
+          </section>
+        </aside>
+      </section>
+
+      <section class="safety-banner section-shell" aria-label="使用边界">
+        <div class="safety-symbol" aria-hidden="true">✓</div>
+        <div>
+          <p class="kicker">Fair play boundary</p>
+          <h2>帮你更快，不帮你作弊。</h2>
+        </div>
+        <p>
+          PULSE 不代登录、不自动下单、不绕过验证码或风控，也不提供外挂、脚本或代抢。请只通过官方平台购票，保护账号与支付安全。
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer section-shell">
+      <div class="footer-brand">
+        <span class="brand-mark small" aria-hidden="true">
+          <svg viewBox="0 0 42 42"><path d="M5 22h8l3-12 7 23 4-11h10" /></svg>
+        </span>
+        <strong>PULSE</strong>
+      </div>
+      <p>Prepare hard. Click calmly. Go official.</p>
+      <span id="footer-year">2026</span>
+    </footer>
+
+    <dialog class="event-dialog" id="event-dialog">
+      <form method="dialog" class="dialog-card" id="event-form">
+        <div class="dialog-head">
+          <div>
+            <p class="kicker" id="dialog-kicker">New mission</p>
+            <h2 id="dialog-title">添加场次</h2>
+          </div>
+          <button class="dialog-close" id="dialog-close" type="button" aria-label="关闭">×</button>
+        </div>
+
+        <input type="hidden" id="event-id" />
+
+        <div class="form-grid">
+          <label class="field full">
+            <span>场次名称 <b>必填</b></span>
+            <input id="event-name" name="name" type="text" maxlength="80" placeholder="例如：上海站演唱会 / 北京—上海高铁" required />
+          </label>
+
+          <label class="field">
+            <span>类型</span>
+            <select id="event-type" name="type">
+              <option value="train">火车票</option>
+              <option value="concert">演唱会</option>
+              <option value="exhibition">展览</option>
+              <option value="sports">赛事</option>
+              <option value="other">其他</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>开售时间 <b>北京时间</b></span>
+            <input id="event-sale-at" name="saleAt" type="datetime-local" required />
+          </label>
+
+          <label class="field full">
+            <span>地点 / 座位需求</span>
+            <input id="event-place" name="place" type="text" maxlength="100" placeholder="例如：梅赛德斯-奔驰文化中心 · 内场" />
+          </label>
+
+          <label class="field full">
+            <span>官方购票链接</span>
+            <input id="event-url" name="url" type="url" placeholder="https://..." />
+            <small>只填写官网或官方 App 的分享链接，不建议使用第三方代抢页面。</small>
+          </label>
+
+          <label class="field full">
+            <span>备注</span>
+            <textarea id="event-notes" name="notes" rows="3" maxlength="240" placeholder="票档优先级、同行人、备选日期等"></textarea>
+          </label>
+        </div>
+
+        <div class="dialog-note">
+          <span aria-hidden="true">i</span>
+          提醒只在本页面打开时工作。开售当天请保持页面在线，并在官方 App 内完成操作。
+        </div>
+
+        <div class="dialog-actions">
+          <button class="button button-quiet" id="dialog-cancel" type="button">取消</button>
+          <button class="button button-accent" type="submit">保存场次 <span aria-hidden="true">→</span></button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="./app.js?v=2" defer></script>
+  </body>
+</html>
