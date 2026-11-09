@@ -23,6 +23,30 @@
   box-sizing: border-box;
 }
 
+[hidden] { display: none !important; }
+
+.agent-panel { margin-bottom: 40px; scroll-margin-top: 100px; }
+.agent-badge { padding: 6px 10px; border: 1px solid var(--ink); font-size: .7rem; background: var(--paper); }
+.agent-badge.ready { background: var(--lime); }
+.agent-guide { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+.agent-guide span { padding: 7px 12px; background: var(--paper); font-size: .76rem; border-bottom: 2px solid var(--orange); }
+.agent-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.agent-help { color: var(--muted); font-size: .73rem; line-height: 1.8; }
+.agent-feedback { font-size: .8rem; font-weight: 700; }
+.agent-feedback.error { color: var(--red); }
+.agent-jobs { display: grid; gap: 16px; margin-top: 22px; }
+.agent-job { border: 1px solid var(--line-dark); padding: 20px; background: var(--paper); font-size: .8rem; }
+.agent-job-head { display: flex; justify-content: space-between; align-items: start; gap: 10px; flex-wrap: wrap; }
+.agent-job h3 { margin: 0; font-size: 1.2rem; }
+.agent-origin { color: var(--muted); overflow-wrap: anywhere; font-size: .7rem; }
+.agent-mappings { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-block: 20px; }
+.agent-mappings select { max-width: 100%; }
+.agent-fields { min-width: 0; padding: 20px; border: 1px solid var(--line-dark); background: var(--paper); }
+.agent-fields legend { font-weight: 800; font-size: .9rem; padding-inline: 5px; }
+.agent-toggle { display: flex; align-items: center; gap: 10px; font-size: .82rem; font-weight: 700; }
+.agent-toggle input { accent-color: var(--orange); width: 18px; height: 18px; }
+.agent-fields .agent-toggle input { width: 18px; height: 18px; min-height: 18px; padding: 0; margin: 0; flex: 0 0 18px; }
+
 html {
   scroll-behavior: smooth;
 }

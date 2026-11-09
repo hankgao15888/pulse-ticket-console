@@ -11,7 +11,7 @@
     <title>PULSE 抢票作战台</title>
     <link rel="icon" href="./pulse-mark.svg" type="image/svg+xml" />
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./styles.css?v=2" />
+    <link rel="stylesheet" href="./styles.css?v=4" />
   </head>
   <body>
     <div class="page-noise" aria-hidden="true"></div>
@@ -102,7 +102,7 @@
             </div>
             <div>
               <span class="signal-label">FAST / FAIR / OFFICIAL</span>
-              <p>不做外挂，不绕验证。只在官方渠道里，把自己准备到最好。</p>
+            <p>连接本机代理，预约填写官方表单。登录、验证和付款由你掌握。</p>
             </div>
           </div>
         </div>
@@ -418,10 +418,10 @@
         <div class="safety-symbol" aria-hidden="true">✓</div>
         <div>
           <p class="kicker">Fair play boundary</p>
-          <h2>帮你更快，不帮你作弊。</h2>
+          <h2>预约填写，现场确认。</h2>
         </div>
         <p>
-          PULSE 不代登录、不自动下单、不绕过验证码或风控，也不提供外挂、脚本或代抢。请只通过官方平台购票，保护账号与支付安全。
+          本机代理按预约时间填写你已确认的官方字段。平台登录、验证码、排队和订单支付需你完成；网站不会将“填表完成”标记为“购票成功”。
         </p>
       </section>
     </main>
@@ -468,7 +468,7 @@
 
           <label class="field">
             <span>开售时间 <b>北京时间</b></span>
-            <input id="event-sale-at" name="saleAt" type="datetime-local" required />
+            <input id="event-sale-at" name="saleAt" type="datetime-local" step="1" required />
           </label>
 
           <label class="field full">
@@ -490,7 +490,7 @@
 
         <div class="dialog-note">
           <span aria-hidden="true">i</span>
-          提醒只在本页面打开时工作。开售当天请保持页面在线，并在官方 App 内完成操作。
+          网页提醒要求页面保持打开；本机代理任务要求电脑、代理程序和购票浏览器保持运行。
         </div>
 
         <div class="dialog-actions">
@@ -502,6 +502,7 @@
 
     <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
 
-    <script src="./app.js?v=2" defer></script>
+    <script src="./agent-ui.js?v=4" defer></script>
+    <script src="./app.js?v=4" defer></script>
   </body>
 </html>

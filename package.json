@@ -1,0 +1,10 @@
+{
+  "name": "pulse-ticket-console",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "description": "Local scheduled ticket-form assistant",
+  "scripts": { "start": "node server.mjs", "test": "node --test agent.test.mjs" },
+  "dependencies": { "playwright": "1.62.1" },
+  "engines": { "node": ">=22" }
+}

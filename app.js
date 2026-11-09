@@ -113,18 +113,18 @@
 
   function chinaWallTimeToIso(wallTime) {
     const match = String(wallTime).match(
-      /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/,
+      /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?$/,
     );
     if (!match) return "";
-    const [, year, month, day, hour, minute] = match.map(Number);
+    const [, year, month, day, hour, minute, second = 0] = match.map((part) => part === undefined ? undefined : Number(part));
     return new Date(
-      Date.UTC(year, month - 1, day, hour - 8, minute, 0, 0),
+      Date.UTC(year, month - 1, day, hour - 8, minute, second, 0),
     ).toISOString();
   }
 
   function isoToChinaWallTime(iso) {
     const parts = chinaParts(new Date(iso));
-    return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}`;
+    return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}`;
   }
 
   function futureChinaIso(daysAhead, hour, minute = 0) {
@@ -223,6 +223,7 @@
       place: String(input?.place || "").slice(0, 100),
       url: safeUrl(input?.url),
       notes: String(input?.notes || "").slice(0, 240),
+      agentJobId: typeof input?.agentJobId === "string" ? input.agentJobId : null,
       checks,
       createdAt: input?.createdAt || new Date().toISOString(),
     };
@@ -693,6 +694,7 @@
     $("#event-notes").value = event?.notes || "";
     $("#dialog-kicker").textContent = event ? "Edit mission" : "New mission";
     $("#dialog-title").textContent = event ? "编辑场次" : "添加场次";
+    window.PulseAgent?.reset(event);
 
     const dialog = $("#event-dialog");
     if (typeof dialog.showModal === "function") dialog.showModal();
@@ -705,9 +707,10 @@
     if (typeof dialog.close === "function") dialog.close();
     else dialog.removeAttribute("open");
     state.editingId = null;
+    window.PulseAgent?.clearPersonalFields();
   }
 
-  function submitEvent(formData) {
+  async function submitEvent(formData) {
     const saleAt = chinaWallTimeToIso(String(formData.get("saleAt") || ""));
     if (!saleAt) {
       showToast("请填写有效的开售日期与时间。", "error");
@@ -738,7 +741,17 @@
       notes: formData.get("notes"),
       checks: existing?.checks || emptyChecks(),
       createdAt: existing?.createdAt,
+      agentJobId: existing?.agentJobId,
     });
+
+    try {
+      if (window.PulseAgent) {
+        event.agentJobId = await window.PulseAgent.save(event);
+      }
+    } catch (error) {
+      showToast(error.message || "本机代理未能保存任务。", "error");
+      return;
+    }
 
     if (existing) {
       state.events = state.events.map((item) =>
@@ -752,13 +765,20 @@
 
     saveEvents();
     closeEventDialog();
+    $("#event-form").reset();
     renderAll();
   }
 
-  function deleteEvent(id) {
+  async function deleteEvent(id) {
     const event = getEvent(id);
     if (!event) return;
     if (!window.confirm(`删除“${event.name}”？\n该场次的本地检查记录也会一并删除。`)) return;
+    try {
+      if (event.agentJobId) await window.PulseAgent?.cancel(event.agentJobId);
+    } catch (error) {
+      showToast("代理任务未取消，请先在代理面板停止任务。", "error");
+      return;
+    }
     state.events = state.events.filter((item) => item.id !== id);
     saveEvents();
     renderAll();
@@ -895,12 +915,19 @@
     }
   }
 
-  function clearAllData() {
+  async function clearAllData() {
     if (
       !window.confirm(
         "清空所有场次、检查项和提醒记录？\n此操作只影响当前浏览器，无法撤销。",
       )
     ) {
+      return;
+    }
+    try {
+      await Promise.all(state.events.filter((event) => event.agentJobId)
+        .map((event) => window.PulseAgent?.cancel(event.agentJobId)));
+    } catch {
+      showToast("部分代理任务未取消，请先在代理面板停止任务。", "error");
       return;
     }
     state.events = [];
@@ -947,9 +974,16 @@
       }
     });
 
-    $("#event-form").addEventListener("submit", (event) => {
+    $("#event-form").addEventListener("submit", async (event) => {
       event.preventDefault();
-      submitEvent(new FormData(event.currentTarget));
+      const button = event.currentTarget.querySelector('[type="submit"]');
+      if (button.disabled) return;
+      button.disabled = true;
+      try {
+        await submitEvent(new FormData(event.currentTarget));
+      } finally {
+        button.disabled = false;
+      }
     });
 
     $("#dialog-close").addEventListener("click", closeEventDialog);
