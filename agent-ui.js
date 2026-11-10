@@ -20,7 +20,37 @@
     <p class="panel-intro">添加链接、开售时间和资料，先在官方页面完成登录、选好票档，再识别并确认填写位置。到时自动填入已确认的字段，提交订单与付款由你完成。</p>
     <div class="agent-guide"><span>01 添加资料</span><span>02 打开并识别</span><span>03 确认并预约</span><span>04 核对并下单</span></div>
     <div class="agent-actions"><a class="button button-dark" href="http://127.0.0.1:4180" target="_blank" rel="noreferrer">打开本机代理 ↗</a><a class="button button-outline" href="https://github.com/hankgao15888/pulse-ticket-console" target="_blank" rel="noreferrer">GitHub 项目</a><a class="button button-outline" href="https://github.com/hankgao15888/pulse-ticket-console/archive/refs/heads/main.zip">下载代理程序</a><button class="button button-outline" id="agent-damai" type="button">添加这场大麦</button>${local ? '<button class="button button-outline" id="agent-demo" type="button">本机演练</button>' : ''}</div>
-    <p class="agent-help">解压后双击 start.cmd，需要 Node.js 22+ 和 Microsoft Edge。任务运行期间请保持代理程序和购票浏览器开启，电脑不能休眠。资料只保存在代理内存，退出程序后清除。</p>
+    <div class="agent-manual" id="agent-manual">
+      <div class="agent-manual-heading"><p class="kicker">START HERE</p><h3>下载与使用方法</h3><p>首次使用或换一台电脑，请先在那台 Windows 电脑上安装并启动代理，再填写个人资料。</p></div>
+      <div class="agent-manual-grid">
+        <article class="agent-manual-card">
+          <h4>01 下载与安装</h4>
+          <ol>
+            <li>安装 <a href="https://nodejs.org/zh-cn/download" target="_blank" rel="noreferrer">Node.js 22 或更高版本</a>，并确认电脑上已安装 <a href="https://www.microsoft.com/edge/download" target="_blank" rel="noreferrer">Microsoft Edge</a>。</li>
+            <li><a href="https://github.com/hankgao15888/pulse-ticket-console/archive/refs/heads/main.zip">下载完整项目 ZIP</a>，右键选择“全部解压”。不要直接在压缩包里运行。</li>
+            <li>打开解压后的文件夹，双击 <code>start.cmd</code>。首次启动需要联网下载依赖，等待窗口提示“本机代理已运行”。</li>
+            <li>打开 <a href="http://127.0.0.1:4180" target="_blank" rel="noreferrer">本机控制台 127.0.0.1:4180</a>。后续使用直接运行 <code>start.cmd</code> 即可。</li>
+          </ol>
+        </article>
+        <article class="agent-manual-card">
+          <h4>02 填写资料与预约</h4>
+          <ol>
+            <li>在本机控制台点击“添加场次”，填写官方链接和开售时间（北京时间，支持秒）。</li>
+            <li>找到“定时填表”，勾选“保存为本机代理任务”，填写姓名、手机号、证件号码（可选）和票数，再保存场次。</li>
+            <li>在任务卡片点击“打开页面 / 重新识别”。在新打开的 Edge 中手动登录、完成验证，并选好场次和票档。</li>
+            <li>进入填写页面后回控制台重新识别，核对每项资料对应的字段，点击“确认字段并预约”。</li>
+            <li>到预约时间自动填写一次。请在官方页面核对资料、票档和金额，再手动提交订单及付款。</li>
+          </ol>
+        </article>
+      </div>
+      <p class="agent-manual-note">想先试用？启动代理后，点击本机控制台中的“本机演练”，用虚构资料体验填写流程。任务期间保持代理程序和购票浏览器运行，电脑不能休眠；控制台网页可以关闭。</p>
+      <div class="agent-manual-faq">
+        <details><summary>其他电脑只打开网站就能自动填表吗？</summary><p>每台电脑都需要分别下载并启动代理，再打开该电脑的本机控制台。127.0.0.1 指向你当前使用的电脑。在线网站提供下载和场次管理，自动填写由本机代理执行；当前安装步骤适用于 Windows 和 Edge。</p></details>
+        <details><summary>打不开本机控制台，或提示找不到 Node.js？</summary><p>先确认已安装 Node.js 22+，再重新双击解压目录中的 start.cmd，并保持程序窗口开启。首次安装依赖需要联网。不要直接双击 index.html；若提示端口已占用，可能已有代理运行，先尝试打开本机控制台。</p></details>
+        <details><summary>看不到个人资料输入框，或识别不到官方字段？</summary><p>个人资料需在本机控制台的“添加场次”弹窗中，勾选“保存为本机代理任务”后填写。官方详情页通常没有实名表单，请先登录并选择场次和票档，进入填写页面后再识别。App、小程序和跨域 iframe 中的表单目前不支持。</p></details>
+        <details><summary>资料会保存在哪里？能自动下单吗？</summary><p>姓名、手机号和证件号只保存在本机代理内存中，不进入场次备份或 GitHub。退出或重启代理后需重新录入和预约。当前功能是定时填表；登录、验证码、排队、选票、提交订单和付款仍需手动完成。</p></details>
+      </div>
+    </div>
     <p id="agent-feedback" class="agent-feedback" role="status"></p><div id="agent-jobs" class="agent-jobs"></div>`;
   $('.metrics').before(panel);
 

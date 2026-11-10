@@ -1,5 +1,5 @@
-const CACHE_NAME = 'pulse-v4';
-const SHELL = ['./', './index.html', './styles.css?v=4', './app.js?v=4', './agent-ui.js?v=4', './pulse-mark.svg', './manifest.webmanifest'];
+const CACHE_NAME = 'pulse-v5';
+const SHELL = ['./', './index.html', './styles.css?v=5', './app.js?v=5', './agent-ui.js?v=5', './pulse-mark.svg', './manifest.webmanifest'];
 self.addEventListener('install', (event) => { event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(SHELL))); self.skipWaiting(); });
 self.addEventListener('activate', (event) => { event.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((key) => key.startsWith('pulse-') && key !== CACHE_NAME).map((key) => caches.delete(key))))); self.clients.claim(); });
 self.addEventListener('fetch', (event) => {

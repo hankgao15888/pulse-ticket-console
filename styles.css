@@ -32,6 +32,26 @@
 .agent-guide span { padding: 7px 12px; background: var(--paper); font-size: .76rem; border-bottom: 2px solid var(--orange); }
 .agent-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .agent-help { color: var(--muted); font-size: .73rem; line-height: 1.8; }
+.agent-manual { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 24px; }
+.agent-manual-heading h3 { margin: 0 0 8px; font-size: 1.35rem; }
+.agent-manual-heading > p:last-child { color: var(--muted); font-size: .85rem; }
+.agent-manual-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.agent-manual-card { min-width: 0; padding: 22px; border: 1px solid var(--line-dark); background: var(--paper); }
+.agent-manual-card h4 { margin: 0 0 16px; font-size: 1rem; }
+.agent-manual-card ol { margin: 0; padding-left: 22px; }
+.agent-manual-card li { padding-left: 4px; margin-bottom: 12px; font-size: .85rem; line-height: 1.9; overflow-wrap: anywhere; }
+.agent-manual-card li:last-child { margin-bottom: 0; }
+.agent-manual a { text-decoration: underline; text-underline-offset: 3px; }
+.agent-manual a:hover { color: var(--orange-deep); }
+.agent-manual code { overflow-wrap: anywhere; font-size: .9em; }
+.agent-manual-note { border-left: 3px solid var(--orange); padding: 12px 16px; background: var(--paper); font-size: .82rem; line-height: 1.9; }
+.agent-manual-faq details { border-bottom: 1px solid var(--line); padding: 14px 0; font-size: .84rem; }
+.agent-manual-faq summary { cursor: pointer; font-weight: 700; }
+.agent-manual-faq p { margin: 12px 0 0; color: var(--muted); line-height: 1.9; }
+@media (max-width: 700px) {
+  .agent-manual-grid { grid-template-columns: minmax(0, 1fr); }
+  .agent-manual-card { padding: 18px; }
+}
 .agent-feedback { font-size: .8rem; font-weight: 700; }
 .agent-feedback.error { color: var(--red); }
 .agent-jobs { display: grid; gap: 16px; margin-top: 22px; }
